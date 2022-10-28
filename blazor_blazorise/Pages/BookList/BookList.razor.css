@@ -1,0 +1,14 @@
+﻿.item {
+    display: flex;
+    flex: 50%;
+}
+
+.scroler {
+    overflow-y: scroll;
+    max-height: 700px;
+}
+
+button {
+    width: min-content;
+    height: min-content;
+}

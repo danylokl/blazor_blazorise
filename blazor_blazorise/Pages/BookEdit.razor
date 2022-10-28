@@ -1,0 +1,106 @@
+﻿@inject BookService bookService
+
+<Form Model="@book" OnValidSubmit="@HandleSubmit">
+ 
+
+
+
+    <Fields>
+        <Validations @ref="validations" Mode="ValidationMode.Auto" Model="@book">
+
+            <Fields ColumnSize="ColumnSize.Is6">
+
+                <Validation>
+                    <Field ColumnSize="ColumnSize.Is12">
+                        <FieldLabel>Title</FieldLabel>
+                        <TextEdit @bind-Text=book.Title />
+                    </Field>
+                </Validation>
+                <Validation>
+                    <Field ColumnSize="ColumnSize.Is12">
+                        <FieldLabel>Cover</FieldLabel>
+                        <TextEdit @bind-Text=book.Cover />
+                    </Field>
+                </Validation>
+                <Validation>
+                    <Field ColumnSize="ColumnSize.Is12">
+                        <FieldLabel>Genre</FieldLabel>
+                        <TextEdit @bind-Text=book.Genre />
+                    </Field>
+                </Validation>
+                <Validation>
+                    <Field ColumnSize="ColumnSize.Is12">
+                        <FieldLabel>Author</FieldLabel>
+                        <TextEdit @bind-Text=book.Author />
+                    </Field>
+                </Validation>
+                <Blazorise.ValidationSummary  />
+
+
+
+            </Fields>
+
+
+            <Field ColumnSize="ColumnSize.IsHalf">
+                <FieldLabel>Content</FieldLabel>
+                <TextEdit @bind-Value=book.Content style="height:100%;" class="form-control book-content" />
+            </Field>
+
+            <Button  Clicked="@HandleSubmit" Color="Color.Primary">Submit</Button>
+            <Button Type="ButtonType.Reset" Color="Color.Danger"> Clean</Button>
+
+
+
+        </Validations>
+    </Fields>
+
+</Form>
+@code {
+    [Parameter]
+    public Book book { get; set; }
+    Validations validations;
+
+    [Parameter]
+    public EventCallback SubmitCallBack { get; set; }
+    private bool isEdit = false;
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    private async Task HandleSubmit()
+    {
+        if(await validations.ValidateAll())
+        {
+            book.Title = "success";
+            if (!isEdit)
+        {
+            Book newBook = book;
+            newBook.Cover = "/626.png";
+            newBook.Reviews = new List<Review> { new Review() { Reviewer = "", Score = 0, Message = "" } };
+
+            bookService.AddNewBook(newBook);
+            book = new();
+        }
+        else
+        {
+            bookService.EditBook(book);
+            isEdit = false;
+            book = new();
+        }
+
+       await SubmitCallBack.InvokeAsync();
+      }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (book.Title != null)
+        {
+            isEdit = true;
+
+        }
+
+    }
+}

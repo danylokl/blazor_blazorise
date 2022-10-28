@@ -1,0 +1,45 @@
+﻿@inject BookService bookService
+<div class="container" style="height:80%">
+    <div class="row">
+        <BookEdit SubmitCallBack="@ChangeBookList" book="book">
+
+        </BookEdit>
+    </div>
+
+</div>
+
+<div class="container" style="height:700px">
+    <div class="row">
+        <div class="row scroler">
+
+            @foreach (var book in Books)
+            {
+                <div class="item">
+
+                <BookListComponent OnEditCallback="@ChangeEditBook" book="book"> </BookListComponent>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+@code {
+    public Book book { get; set; } = new();
+    List<Book> Books = new List<Book>();
+
+    protected override void OnInitialized()
+    {
+        Books = bookService.GetAllBooks();
+    }
+
+    private void ChangeEditBook(Book bookToEdit)
+    {
+        book = bookToEdit;
+    }
+
+    private void ChangeBookList()
+    {
+        Books = bookService.GetAllBooks();
+        book = new();
+    }
+}

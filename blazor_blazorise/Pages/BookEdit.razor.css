@@ -1,0 +1,19 @@
+﻿.book-content {
+    height: 100px;
+    border: 1px solid grey;
+    float: right;
+      background-color: green;
+}
+.wrapper {
+  display: flex;
+}
+.buttons {
+  display: flex;
+  justify-content: center;
+
+}
+.right .left {
+  width: 50%;
+  display: flex;
+}
+

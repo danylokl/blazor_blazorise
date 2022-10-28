@@ -1,0 +1,39 @@
+﻿<div class="wrapper">
+    <div class="item">
+        <Figure Size="FigureSize.Is128x128">
+            <FigureImage Source="@book.Cover" />
+
+        </Figure>
+        <div class="up">
+            <Paragraph>@book.Title</Paragraph>
+            <Paragraph>
+                Reviews @book.Reviews.Count Score @book.Reviews.Average(i=>i.Score)
+            </Paragraph>
+        </div>
+        <div class="bottom-0">
+            <Button Class="button" Color="Color.Info" @onclick="@DetailBookClicked">detail</Button>
+            <Button Class="button" Color="Color.Secondary" @onclick="()=>BookToEditSelected(book)">edit</Button>
+            <BookDetail book="book" modalShow="modalShow"></BookDetail>
+        </div>
+
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Book book { get; set; }
+    private bool modalShow = false;
+    [Parameter]
+    public EventCallback<Book> OnEditCallback { get; set; }
+
+    private void BookToEditSelected(Book book)
+    {
+        OnEditCallback.InvokeAsync(book);
+    }
+
+    private void DetailBookClicked()
+    {
+        modalShow = true;
+    }
+}

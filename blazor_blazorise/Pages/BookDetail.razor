@@ -1,0 +1,64 @@
+﻿<Modal @ref="modalRef">
+    <ModalContent Size="ModalSize.Large">
+
+        <ModalHeader>
+            <ModalTitle> @book.Title </ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <div class="container">
+                <div class="wrapper">
+                    <div>
+                        <Carousel Interval=100 Autoplay=false  @bind-SelectedSlide="@selectedSlide">
+                            <CarouselSlide Name="1">
+                                <Figure Size="FigureSize.Is128x128">
+                                    <FigureImage Source="@book.Cover" />
+                                </Figure>
+                            </CarouselSlide>
+                            <CarouselSlide Name="2">
+                                <Figure Size="FigureSize.Is128x128">
+                                    <FigureImage Source="/EYcxv61XgAIf0wN.png" />
+                                </Figure>
+                            </CarouselSlide>
+                        </Carousel>
+
+                    </div>
+                    <div>
+                        <Paragraph> @book.Author @book.Genre</Paragraph>
+                        <div class="content">
+                            @book.Content
+                        </div>
+                    </div>
+                </div>
+                <ListGroup>
+                    @foreach (var review in book.Reviews)
+                    {
+                        <ListGroupItem>
+                            <Paragraph> @review.Reviewer</Paragraph>
+                            <div class="review-message">
+                                @review.Message
+                            </div>
+                        </ListGroupItem>
+                    }
+                </ListGroup>
+            </div>
+
+        </ModalBody>
+    </ModalContent>
+</Modal>
+@code {
+    [Parameter]
+    public bool modalShow { get; set; }
+    [Parameter]
+    public Book book { get; set; }
+    private Modal modalRef;
+    private string selectedSlide = "1";
+
+    protected override void OnParametersSet()
+    {
+        if (modalShow)
+        {
+            modalRef.Show();
+        }
+    }
+}

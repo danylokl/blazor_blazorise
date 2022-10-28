@@ -1,0 +1,12 @@
+﻿.item {
+    display: flex;
+    flex: 50%;
+}
+
+button {
+    height: 20px;
+    width: 30px;
+    font-size: 8px;
+    padding: 0%;
+    vertical-align: top;
+}
